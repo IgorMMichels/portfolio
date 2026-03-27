@@ -1,0 +1,1 @@
+- `class-variance-authority` was missing after running `npx shadcn@latest add button`. Installed it manually to fix the build.

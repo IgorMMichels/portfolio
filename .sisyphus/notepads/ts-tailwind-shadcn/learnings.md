@@ -1,0 +1,4 @@
+- Tailwind v4 is installed, which uses CSS-based configuration (`@theme` in `src/globals.css`).
+- `tailwind.config.js` is still present and might be used by some tools, but Tailwind v4 primarily relies on `src/globals.css`.
+- Created `components.json` to ensure `npx shadcn@latest add` works correctly with the current setup.
+- Verified that `npx shadcn@latest add button` successfully adds components to `src/components/ui`.

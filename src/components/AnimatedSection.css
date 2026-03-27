@@ -1,0 +1,3 @@
+.animated-section {
+  will-change: transform, opacity;
+}

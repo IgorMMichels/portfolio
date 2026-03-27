@@ -1,0 +1,28 @@
+.app {
+  position: relative;
+  min-height: 100vh;
+}
+
+.parallax-section {
+  position: relative;
+  z-index: 2;
+}
+
+.parallax-scrolling__layers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  align-items: start;
+}
+
+.parallax-scrolling__layers img {
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+  height: 400px;
+  transition: transform 0.3s ease;
+}
+
+.parallax-scrolling__layers img:hover {
+  transform: scale(1.02);
+}
