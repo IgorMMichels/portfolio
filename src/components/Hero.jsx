@@ -1,34 +1,21 @@
 import { useRef, useEffect } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './Hero.css'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export default function Hero() {
   const heroRef = useRef(null)
-  const videoContainerRef = useRef(null)
-  const videoRef = useRef(null)
   const contentRef = useRef(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Video scrubbing: bind a timeline to currentTime on scroll
-      if (videoRef.current) {
-        videoRef.current.addEventListener('loadedmetadata', () => {
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: heroRef.current,
-              start: 'top top',
-              end: 'bottom top',
-              scrub: true
-            }
-          })
-          tl.to(videoRef.current, { currentTime: videoRef.current.duration, ease: 'none' })
-        })
-      }
+      gsap.from(['.hero-greeting', '.hero-name', '.hero-roles', '.hero-scroll-indicator'], {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power3.out'
+      })
 
-      // Content fade on scroll
       gsap.to(contentRef.current, {
         scrollTrigger: {
           trigger: heroRef.current,
@@ -37,43 +24,8 @@ export default function Hero() {
           scrub: true
         },
         opacity: 0,
-        y: -30,
-        ease: 'none'
+        y: -30
       })
-
-      // Entry animations - simpler, not conflicting with scroll
-      gsap.from('.hero-greeting', {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        delay: 0.2,
-        ease: 'power3.out'
-      })
-
-      gsap.from('.hero-name', {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        delay: 0.4,
-        ease: 'power3.out'
-      })
-
-      gsap.from('.hero-roles', {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        delay: 0.6,
-        ease: 'power3.out'
-      })
-
-      gsap.from('.hero-scroll-indicator', {
-        y: 20,
-        opacity: 0,
-        duration: 0.8,
-        delay: 1,
-        ease: 'power3.out'
-      })
-
     }, heroRef)
 
     return () => ctx.revert()
@@ -81,14 +33,12 @@ export default function Hero() {
 
   return (
     <section id="inicio" ref={heroRef} className="hero">
-      <div className="hero-video-container" ref={videoContainerRef}>
+      <div className="hero-video-container">
         <video
-          ref={videoRef}
           className="hero-video"
           playsInline
-          preload="auto"
           muted
-          loop
+          poster="/assets/fisrtFrame.jpg"
         >
           <source src="/assets/video_igor.mp4" type="video/mp4" />
         </video>

@@ -1,7 +1,7 @@
 .social-sidebar {
   position: fixed;
   left: 40px;
-  top: 50%;
+  top: 85%;
   transform: translateY(-50%);
   z-index: 100;
 }
@@ -9,7 +9,7 @@
 .social-icons {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 12px;
 }
 
 .social-icon {
@@ -18,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.7);
   background: rgba(11, 15, 26, 0.8);
   border: 1px solid rgba(34, 211, 238, 0.1);
   border-radius: var(--radius-md);

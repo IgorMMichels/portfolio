@@ -3,23 +3,31 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './Timeline.css'
 
-gsap.registerPlugin(ScrollTrigger)
-
 const timelineItems = [
   {
+    year: '2021',
+    title: 'Primeiro contato com programação',
+    description: 'Iniciei minha jornada criando um jogo no Roblox com um amigo, focando na parte de construção e desenvolvimento do ambiente.'
+  },
+  {
     year: '2023',
-    title: 'Início na Programação',
-    description: 'Primeiros passos no mundo do desenvolvimento web, aprendendo os fundamentos de HTML, CSS e JavaScript.'
+    title: 'Fundamentos de programação',
+    description: 'Aprendi Python e lógica de programação, entendendo como estruturar códigos e desenvolver soluções simples.'
   },
   {
     year: '2024',
-    title: 'Projetos Reais e Automações',
-    description: 'Desenvolvimento de projetos comerciais, automações e descoberta de ferramentas de IA para otimização de workflows.'
+    title: 'Primeiro website',
+    description: 'Criei meu primeiro site utilizando HTML, CSS e JavaScript, com apoio de inteligência artificial.'
   },
   {
-    year: 'Agora',
-    title: 'Foco em Sistemas Escaláveis e IA',
-    description: 'Construção de sistemas robustos, integração com inteligências artificiais e criação de soluções inovadoras.'
+    year: '2025',
+    title: 'Evolução técnica',
+    description: 'Iniciei no Instituto Federal Catarinense, aprofundando conhecimentos em lógica, JavaScript, HTML, CSS e Python.'
+  },
+  {
+    year: '2026',
+    title: 'Foco em sistemas e IA',
+    description: 'Passei a focar na criação de projetos escaláveis, trabalhando com empresas, banco de dados e aprendendo Vue.js com apoio de IA.'
   }
 ]
 
@@ -94,7 +102,7 @@ export default function Timeline() {
     <section id="timeline" className="timeline section" ref={sectionRef}>
       <div className="container">
         <h2 className="section-title">
-          <span className="title-number">02.</span> Timeline
+          <span className="title-number">02.</span> Minha Jornada
         </h2>
         
         <div className="timeline-container">

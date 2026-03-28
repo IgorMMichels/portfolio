@@ -3,8 +3,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './Header.css'
 
-gsap.registerPlugin(ScrollTrigger)
-
 const navItems = [
   { id: 'inicio', label: 'Início' },
   { id: 'timeline', label: 'Timeline' },

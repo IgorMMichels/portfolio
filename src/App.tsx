@@ -7,7 +7,9 @@ import Contato from './components/Contato'
 import SocialSidebar from './components/SocialSidebar'
 import { MinimalFooter } from './components/ui/minimal-footer'
 import Background from './components/Background'
-import { useEffect } from 'react'
+import { Cursor } from './components/ui/inverted-cursor'
+import { LoadingScreen } from './components/ui/LoadingScreen'
+import { useState, useEffect } from 'react'
 import Lenis from 'lenis'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -16,6 +18,8 @@ import './App.css'
 gsap.registerPlugin(ScrollTrigger)
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true)
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.8,
@@ -40,7 +44,10 @@ function App() {
   }, [])
 
   return (
-    <div className="app">
+    <>
+      {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
+      <div className={`app cursor-none transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+        <Cursor />
       <Background />
       <Header />
       <SocialSidebar />
@@ -54,7 +61,8 @@ function App() {
       </main>
       
       <MinimalFooter />
-    </div>
+      </div>
+    </>
   )
 }
 

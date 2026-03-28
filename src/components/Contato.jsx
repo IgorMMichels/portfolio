@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import AnoAI from './ui/animated-shader-background'
 import './Contato.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -104,7 +105,8 @@ export default function Contato() {
 
   return (
     <section id="contato" className="contato section" ref={sectionRef}>
-      <div className="container">
+      <AnoAI />
+      <div className="contato-glass">
         <h2 className="section-title">
           <span className="title-number">04.</span> Contato
         </h2>
