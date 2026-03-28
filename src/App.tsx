@@ -47,7 +47,7 @@ function App() {
     <>
       {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
       <div className={`app cursor-none transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
-        <Cursor />
+        <Cursor size={24} />
       <Background />
       <Header />
       <SocialSidebar />
