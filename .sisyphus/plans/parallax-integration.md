@@ -58,7 +58,7 @@ task(category="visual-engineering", load_skills=["frontend-ui-ux"], run_in_backg
 
 ## Final Verification Wave
 
-### Wave 3: Integration of `parallax-scrolling.tsx`
+### [x] Wave 3: Integration of `parallax-scrolling.tsx`
 
 ```markdown
 - [x] Wave 3: Integration of parallax-scrolling.tsx
@@ -67,26 +67,16 @@ task(category="visual-engineering", load_skills=["frontend-ui-ux"], run_in_backg
 ### Wave 4: Lenis + GSAP Global Synchronization
 
 ```markdown
-- [ ] Wave 4: Wire Lenis into App.tsx globally and sync with GSAP ScrollTrigger
+- [x] Wave 4: Wire Lenis into App.tsx globally and sync with GSAP ScrollTrigger
 - [ ] Pass shared Lenis instance to ParallaxScrolling component
 - [ ] Validate ScrollTrigger updates across sections and breakpoints
 ```
 
-### Wave 4: Lenis + GSAP Global Synchronization
-
-```typescript
-task(category="deep", load_skills=["frontend-ui-ux"], run_in_background=false, prompt=`
-  [CONTEXT]: Lenis requires GSAP ticker synchronization and lag smoothing disabled for robust React use.
-  [GOAL]: Wire Lenis into App.jsx to globally manage smooth scroll, and integrate the ParallaxDemo component.
-  [ACTION]:
-  1. In App.jsx, implement a global Lenis instance (or create a LenisWrapper.jsx).
-  2. Use \`lenis.on('scroll', ScrollTrigger.update)\`.
-  3. Use \`gsap.ticker.add((time) => { lenis.raf(time * 1000); });\`.
-  4. Use \`gsap.ticker.lagSmoothing(0);\`.
-  5. Clean up instances on unmount.
-  6. Add the ParallaxDemo to the main application structure.
-  [QA]: Lenis smooth scrolling applies to the entire app without breaking GSAP animations.
-`)
+### [x] Wave 4: Lenis + GSAP Global Synchronization
+```markdown
+- [x] Wave 4: Wire Lenis into App.tsx globally and sync with GSAP ScrollTrigger
+- [x] Pass shared Lenis instance to ParallaxScrolling component
+- [x] Validate ScrollTrigger updates across sections and breakpoints
 ```
 
 ### Wave 5: Fix Video Scrubbing in Hero.jsx
