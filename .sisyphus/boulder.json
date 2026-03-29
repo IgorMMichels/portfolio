@@ -1,15 +1,25 @@
 {
-  "active_plan": "C:\\Users\\igor\\Documents\\portfolioo\\.sisyphus\\plans\\parallax-integration.md",
-  "started_at": "2026-03-27T01:12:29.651Z",
+  "active_plan": "C:\\Users\\igor\\Documents\\portfolioo\\.sisyphus\\ralph-loop.local.md",
+  "started_at": "2026-03-28T00:00:00.000Z",
   "session_ids": [
     "ses_2d3da13f3ffe440Cu6GWXNVFfJ",
     "ses_2d3da13f3ffe440Cu6GWXNVFfJ",
     "ses_2d3249c4dffeyUp01Lz8V3iMpG",
     "ses_2d313e239ffeCiC0pvrEEDDBaJ",
     "ses_2ce3083b5ffeWtHPdnxj436FF1",
-    "ses_2ce28c49effe8DQiIkXSfesewR"
+    "ses_2ce28c49effe8DQiIkXSfesewR",
+    "ses_2c93b1e30ffe3Voo8v3jtgGR6Y",
+    "ses_2c9398f6bffeNcZ5kFfMFSaDqB",
+    "ses_2c935154effeVioSSHOM5lI53g",
+    "ses_2c93840c0ffe7OkuFqRDhUfH9u",
+    "ses_2c91fe841ffeT0z2rdSHXQsh0I",
+    "ses_2c9200572ffeX0TVeiozjEMKoo",
+    "ses_2c91f0d22ffeNRFMhPAX5X2eru",
+    "ses_2c91b0fbeffe6sc8T9AGn1lFNx",
+    "ses_2c91072e0ffek6wIrpOhG2lN3i",
+    "ses_2c90d4487ffezDq72OeZ2zT9Fi"
   ],
-  "plan_name": "parallax-integration",
-  "agent": "atlas",
+  "plan_name": "ralph-loop",
+  "agent": "antigravity",
   "task_sessions": {}
 }

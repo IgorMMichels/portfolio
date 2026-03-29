@@ -5,9 +5,14 @@ import './Hero.css'
 export default function Hero() {
   const heroRef = useRef(null)
   const contentRef = useRef(null)
+  const videoRef = useRef(null)
 
   useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
     const ctx = gsap.context(() => {
+      // Initial entrance animation
       gsap.from(['.hero-greeting', '.hero-name', '.hero-roles', '.hero-scroll-indicator'], {
         y: 30,
         opacity: 0,
@@ -16,6 +21,7 @@ export default function Hero() {
         ease: 'power3.out'
       })
 
+      // Content fade out on scroll
       gsap.to(contentRef.current, {
         scrollTrigger: {
           trigger: heroRef.current,
@@ -26,6 +32,31 @@ export default function Hero() {
         opacity: 0,
         y: -30
       })
+
+      // Video scrubbing logic
+      // We wait for metadata to get the duration
+      const setupVideoScrub = () => {
+        gsap.to(video, {
+          currentTime: video.duration || 0,
+          scrollTrigger: {
+            trigger: heroRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1, // Smooth scrubbing
+            invalidateOnRefresh: true
+          }
+        })
+      }
+
+      if (video.readyState >= 1) {
+        setupVideoScrub()
+      } else {
+        video.addEventListener('loadedmetadata', setupVideoScrub)
+      }
+
+      return () => {
+        video.removeEventListener('loadedmetadata', setupVideoScrub)
+      }
     }, heroRef)
 
     return () => ctx.revert()
@@ -35,9 +66,11 @@ export default function Hero() {
     <section id="inicio" ref={heroRef} className="hero">
       <div className="hero-video-container">
         <video
+          ref={videoRef}
           className="hero-video"
           playsInline
           muted
+          preload="auto"
           poster="/assets/fisrtFrame.jpg"
         >
           <source src="/assets/video_igor.mp4" type="video/mp4" />
