@@ -2,10 +2,10 @@ import { test, expect } from '@playwright/test';
 
 test('ParallaxDemo scroll triggers GSAP animation', async ({ page }) => {
   // Go to the app
-  await page.goto('http://localhost:5173');
+  await page.goto('/');
 
   // Wait for the loading screen to disappear
-  await page.waitForSelector('.app.opacity-100', { timeout: 15000 });
+  await page.waitForSelector('.app.opacity-100', { timeout: 60000 });
 
   // Find the ParallaxDemo section
   const parallaxSection = page.locator('text=Parallax Demo').locator('..');

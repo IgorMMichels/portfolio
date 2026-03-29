@@ -102,4 +102,49 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Hide native scrollbar */
+  html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Custom Scrollbar */
+  .custom-scrollbar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 10px;
+    height: 100vh;
+    z-index: 9999;
+    cursor: pointer;
+  }
+
+  .custom-scrollbar-thumb {
+    position: absolute;
+    width: 6px;
+    min-height: 40px;
+    background: hsl(var(--muted-foreground) / 0.4);
+    border-radius: 3px;
+    opacity: 0;
+    transition: opacity 0.3s ease, background 0.2s ease;
+    pointer-events: auto;
+    cursor: grab;
+  }
+
+  .custom-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.6);
+  }
+
+  .custom-scrollbar-thumb:active {
+    cursor: grabbing;
+  }
+
+  html:hover .custom-scrollbar-thumb {
+    opacity: 1;
+  }
 }

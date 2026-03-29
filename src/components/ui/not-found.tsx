@@ -1,112 +1,74 @@
-"use client";
+import { useNavigate } from "react-router-dom"
+import { DottedSurface } from './dotted-surface'
+import './not-found.css'
 
-import { AnimatePresence, motion, type Variants } from "framer-motion";
-import { ArrowLeftIcon } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "./button";
-import { Globe } from "./cosmic-404";
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: "easeOut" } },
-};
-
-const globeVariants: Variants = {
-  hidden: { scale: 0.85, opacity: 0, y: 10 },
-  visible: {
-    scale: 1,
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1, ease: "easeOut" },
-  },
-  floating: {
-    y: [-4, 4],
-    transition: {
-      duration: 5,
-      ease: "easeInOut",
-      repeat: Infinity,
-      repeatType: "reverse",
-    },
-  },
-};
-
-export interface NotFoundProps {
-  title?: string;
-  description?: string;
-  backText?: string;
-}
-
-export default function NotFound({
-  title = "Ups! Lost in space",
-  description = "We couldn't find the page you're looking for. It might have been moved or deleted.",
-  backText = "Go Back",
-}: NotFoundProps) {
-  const navigate = useNavigate();
-
-  const handleGoBack = () => {
-    navigate(-1);
-  };
+export default function NotFound() {
+  const navigate = useNavigate()
 
   return (
-    <div className="flex flex-col justify-center items-center px-4 h-[88vh] bg-background">
-      <AnimatePresence mode="wait">
-        <motion.div
-          className="text-center"
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-          variants={fadeUp}
-        >
-          <div className="flex items-center justify-center gap-6 mb-10">
-            <motion.span
-              className="text-7xl md:text-8xl font-bold text-foreground/80 select-none"
-              variants={fadeUp}
+    <div className="not-found">
+      <DottedSurface position="fixed" />
+      <div className="not-found-content">
+        {/* Clean 404 with spinning ball */}
+        <div className="not-found-numbers">
+          <span className="text-6xl md:text-8xl font-light tracking-[0.2em] text-white/60">
+            4
+          </span>
+          
+          <div className="not-found-spinner">
+            <svg 
+              viewBox="0 0 100 100"
+              style={{ 
+                opacity: 0.3
+              }}
             >
-              4
-            </motion.span>
-
-            <motion.div
-              className="relative w-24 h-24 md:w-32 md:h-32"
-              variants={globeVariants}
-              animate={["visible", "floating"]}
-            >
-              <Globe />
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.08)_0%,transparent_70%)]" />
-            </motion.div>
-
-            <motion.span
-              className="text-7xl md:text-8xl font-bold text-foreground/80 select-none"
-              variants={fadeUp}
-            >
-              4
-            </motion.span>
+              <circle 
+                cx="50" 
+                cy="50" 
+                r="45" 
+                fill="none" 
+                stroke="white" 
+                strokeWidth="1"
+                strokeDasharray="8 4"
+              />
+            </svg>
           </div>
+          
+          <span className="text-6xl md:text-8xl font-light tracking-[0.2em] text-white/60">
+            4
+          </span>
+        </div>
 
-          <motion.h1
-            className="mb-4 text-3xl md:text-5xl font-semibold tracking-tight text-foreground"
-            variants={fadeUp}
+        {/* Message */}
+        <div className="not-found-message">
+          <span className="text-lg md:text-xl font-light tracking-[0.2em] text-white/80 uppercase">
+            Página não encontrada
+          </span>
+          <span className="text-sm tracking-[0.1em] text-white/40">
+            A página que você procura não existe
+          </span>
+        </div>
+
+        {/* Back button */}
+        <button
+          onClick={() => navigate('/')}
+          className="not-found-button"
+        >
+          <svg 
+            width="18" 
+            height="18" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2"
+            strokeLinecap="round" 
+            strokeLinejoin="round"
           >
-            {title}
-          </motion.h1>
-
-          <motion.p
-            className="mx-auto mb-10 max-w-md text-base md:text-lg text-muted-foreground/70"
-            variants={fadeUp}
-          >
-            {description}
-          </motion.p>
-
-          <motion.div variants={fadeUp}>
-            <Button 
-              className="gap-2 hover:scale-105 transition-all duration-500 cursor-pointer"
-              onClick={handleGoBack}
-            >
-              <ArrowLeftIcon className="w-5 h-5" />
-              {backText}
-            </Button>
-          </motion.div>
-        </motion.div>
-      </AnimatePresence>
+            <path d="M19 12H5M5 12l7-7m-7 7l7 7" />
+          </svg>
+          VOLTAR AO INÍCIO
+        </button>
+      </div>
     </div>
-  );
+  )
 }

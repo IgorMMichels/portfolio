@@ -1,5 +1,5 @@
 .timeline {
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   position: relative;
 }
 
@@ -60,9 +60,7 @@
   align-items: center;
   justify-content: center;
   z-index: 2;
-  box-shadow: 
-    0 0 20px rgba(6, 182, 212, 0.5),
-    0 0 40px rgba(168, 85, 247, 0.3);
+  box-shadow: var(--shadow-glow-cyan);
 }
 
 .node-inner {
@@ -90,14 +88,15 @@
 .timeline-content {
   width: calc(50% - 40px);
   padding: var(--spacing-md);
-  background: rgba(11, 15, 26, 0.8);
-  border: 1px solid rgba(34, 211, 238, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-md);
   transition: all var(--transition-normal);
 }
 
 .timeline-content:hover {
-  border-color: rgba(34, 211, 238, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-5px);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }

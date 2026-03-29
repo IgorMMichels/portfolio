@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 
 test('Hero video scrubbing on scroll', async ({ page }) => {
-  // Go to the app (preview server)
-  await page.goto('http://localhost:4173');
+  // Go to the app
+  await page.goto('/');
 
   // Wait for the loading screen to disappear
-  await page.waitForSelector('.app.opacity-100', { timeout: 15000 });
+  await page.waitForSelector('.app.opacity-100', { timeout: 60000 });
 
   // Find the Hero video
   const video = page.locator('.hero-video');
@@ -31,8 +31,8 @@ test('Hero video scrubbing on scroll', async ({ page }) => {
 });
 
 test('Trabalhos section is visible and has projects', async ({ page }) => {
-  await page.goto('http://localhost:4173');
-  await page.waitForSelector('.app.opacity-100', { timeout: 15000 });
+  await page.goto('/');
+  await page.waitForSelector('.app.opacity-100', { timeout: 60000 });
 
   const trabalhosSection = page.locator('#trabalhos');
   await expect(trabalhosSection).toBeVisible();

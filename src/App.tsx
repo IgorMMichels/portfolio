@@ -5,39 +5,49 @@ import Timeline from './components/Timeline'
 import Trabalhos from './components/Trabalhos'
 import Contato from './components/Contato'
 import SocialSidebar from './components/SocialSidebar'
-import { Footer7 } from './components/ui/footer-7'
-import Background from './components/Background'
-import { Cursor } from './components/ui/inverted-cursor'
+import Footer from './components/Footer'
 import { LoadingScreen } from './components/ui/LoadingScreen'
 import { useState } from 'react'
-import LenisWrapper from './LenisWrapper'
-import ParallaxDemo from './ParallaxDemo'
+import { SmoothScroll } from './components/ui/smooth-scroll'
 import './App.css'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
+  const [videoStarted, setVideoStarted] = useState(false)
+
+  const handleLoadingComplete = () => {
+    // Scroll to top on page load for video animation
+    window.scrollTo(0, 0)
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+    
+    setIsLoading(false)
+    // After loading, start video and lock scroll
+    setVideoStarted(true)
+  }
+
+  const handleVideoComplete = () => {
+    setVideoStarted(false)
+  }
 
   return (
-    <LenisWrapper>
-      {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
-      <div className={`app cursor-none transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
-        <Cursor size={24} />
-      <Background />
-      <Header />
-      <SocialSidebar />
-      
-      <main>
-        <Hero />
-        <ParallaxDemo />
-        <SobreMim />
-        <Timeline />
-        <Trabalhos />
-        <Contato />
-      </main>
-      
-      <Footer7 />
+    <SmoothScroll initialLock={videoStarted}>
+      {isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
+      <div className={`app transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+        <Header />
+        <SocialSidebar />
+        
+        <main>
+          <Hero onVideoComplete={handleVideoComplete} />
+          <SobreMim />
+          <Timeline />
+          <Trabalhos />
+          <Contato />
+        </main>
+
+        <Footer />
       </div>
-    </LenisWrapper>
+    </SmoothScroll>
   )
 }
 

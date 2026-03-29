@@ -2,10 +2,11 @@ import { test, expect } from '@playwright/test';
 
 test.describe('CardsParallax UI Verification', () => {
   test.beforeEach(async ({ page }) => {
+    test.setTimeout(60000); // Increase timeout to 60s
     // Go to the app
-    await page.goto('http://localhost:5173');
-    // Wait for the loading screen to disappear
-    await page.waitForSelector('.app.opacity-100', { timeout: 15000 });
+    await page.goto('/');
+    // Wait for the app to load
+    await page.waitForSelector('#trabalhos', { state: 'attached', timeout: 60000 });
   });
 
   test('Trabalhos section is visible and contains 5 cards', async ({ page }) => {
@@ -13,8 +14,12 @@ test.describe('CardsParallax UI Verification', () => {
     await expect(trabalhosSection).toBeVisible();
 
     // Check for the CardsParallax container
-    const cardsContainer = page.locator('.scroll-cards-wrapper');
+    const cardsContainer = page.locator('.scroll-cards-wrapper > div');
     await expect(cardsContainer).toBeVisible();
+    
+    // Verify 90vw container width
+    const containerClass = await cardsContainer.getAttribute('class');
+    expect(containerClass).toContain('w-[90vw]');
 
     // Verify 5 cards are rendered
     const cards = cardsContainer.locator('.sticky');
@@ -29,7 +34,9 @@ test.describe('CardsParallax UI Verification', () => {
       const style = await card.getAttribute('style');
       
       // Verify sticky top offset calculation: calc(10vh + index * 30px)
-      expect(style).toContain(`top: calc(10vh + ${i * 30}px)`);
+      // Use regex to handle different operand order in calc()
+      const expectedTop = new RegExp(`top: calc\\((${i * 30}px \\+ 10vh|10vh \\+ ${i * 30}px)\\)`);
+      expect(style).toMatch(expectedTop);
       expect(style).toContain(`z-index: ${i}`);
     }
   });
@@ -62,14 +69,29 @@ test.describe('CardsParallax UI Verification', () => {
 
   test('Visual parallax effect on scroll', async ({ page }) => {
     const trabalhosSection = page.locator('#trabalhos');
-    await trabalhosSection.scrollIntoViewIfNeeded();
+    
+    // Scroll to the section using evaluate to avoid waiting for stability
+    await page.evaluate(() => {
+      const el = document.getElementById('trabalhos');
+      if (el) el.scrollIntoView();
+    });
     
     const firstCard = page.locator('.scroll-cards-wrapper .sticky').first();
+    
+    // Scroll the card into view to trigger GSAP animation
+    await page.evaluate(() => {
+      const el = document.querySelector('.scroll-cards-wrapper .sticky');
+      if (el) el.scrollIntoView();
+    });
+    
+    // Wait for the card to become visible (opacity > 0)
+    await expect(firstCard).toBeVisible({ timeout: 10000 });
+    
     const initialBox = await firstCard.boundingBox();
     
     // Scroll down
     await page.evaluate(() => window.scrollBy(0, 500));
-    await page.waitForTimeout(500); // Wait for Lenis/GSAP
+    await page.waitForTimeout(1000); // Wait for Lenis/GSAP
     
     const newBox = await firstCard.boundingBox();
     

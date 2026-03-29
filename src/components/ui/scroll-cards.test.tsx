@@ -1,7 +1,32 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { CardsParallax, iCardItem } from './scroll-cards';
 import '@testing-library/jest-dom';
+
+// Mock GSAP
+vi.mock('gsap', () => {
+  return {
+    default: {
+      registerPlugin: vi.fn(),
+      context: vi.fn((cb) => {
+        cb();
+        return { revert: vi.fn() };
+      }),
+      utils: {
+        toArray: vi.fn(() => []),
+      },
+      fromTo: vi.fn(),
+    },
+  };
+});
+
+vi.mock('gsap/ScrollTrigger', () => {
+  return {
+    ScrollTrigger: {
+      create: vi.fn(),
+    },
+  };
+});
 
 const mockItems: iCardItem[] = [
   {

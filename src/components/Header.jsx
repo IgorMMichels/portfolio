@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useLenis } from './ui/smooth-scroll'
 import './Header.css'
 
 const navItems = [
@@ -59,19 +60,37 @@ export default function Header() {
     }
   }, [])
 
+  const lenis = useLenis()
+
   const scrollToSection = (id) => {
     const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+    if (element && lenis) {
+      lenis.scrollTo(element, { offset: -80, duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) })
     }
   }
 
   return (
     <header ref={headerRef} className={`header ${scrolled ? 'scrolled' : ''}`}>
       <div className="header-container">
-        <a href="#inicio" className="header-logo">
-          <img src="/assets/icon.png" alt="IM" />
-        </a>
+        <button className="header-logo" onClick={() => scrollToSection('inicio')}>
+          <div className="logo-container">
+            <span className="logo-text">IM</span>
+            <svg 
+              className="logo-circle"
+              viewBox="0 0 100 100"
+            >
+              <circle 
+                cx="50" 
+                cy="50" 
+                r="45" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="1.5"
+                strokeDasharray="8 4"
+              />
+            </svg>
+          </div>
+        </button>
         
         <nav className="header-nav" ref={navRef}>
           {navItems.map(item => (

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { gsap } from 'gsap'
+import { DottedSurface } from './dotted-surface'
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void
@@ -51,20 +52,33 @@ export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
         isExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
-      <div className="loading-content flex flex-col items-center gap-8">
-        <div className="relative">
-          <span className="text-5xl md:text-7xl font-light tracking-[0.3em] text-white">
-            I
+      <DottedSurface position="fixed" />
+      <div className="loading-content flex flex-col items-center gap-8" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="relative flex items-center justify-center w-[80px] h-[80px] md:w-[100px] md:h-[100px]">
+          <span className="text-[32px] md:text-[44px] font-light text-white absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            IM
           </span>
-          <span 
-            className="absolute inset-0 text-5xl md:text-7xl font-light tracking-[0.3em] text-white animate-pulse"
-            style={{ opacity: 0.3 }}
+          <svg 
+            className="absolute inset-0 w-full h-full animate-spin-slow"
+            viewBox="0 0 100 100"
+            style={{ 
+              animationDuration: '3s',
+              opacity: 0.2
+            }}
           >
-            I
-          </span>
+            <circle 
+              cx="50" 
+              cy="50" 
+              r="45" 
+              fill="none" 
+              stroke="white" 
+              strokeWidth="1"
+              strokeDasharray="10 5"
+            />
+          </svg>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           <span className="text-xs tracking-[0.4em] text-white/50 uppercase">
             Carregando
           </span>
@@ -107,6 +121,17 @@ export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
             transform: scale(1);
             opacity: 1;
           }
+        }
+        @keyframes spin-slow {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 3s linear infinite;
         }
       `}</style>
     </div>

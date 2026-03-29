@@ -1,26 +1,8 @@
 .contato {
-  background: linear-gradient(180deg, rgba(11, 15, 26, 0.95) 0%, rgba(5, 6, 10, 0.98) 100%);
+  background: linear-gradient(180deg, var(--bg-primary) 0%, rgba(5, 6, 10, 0.95) 100%);
   position: relative;
   text-align: center;
-  overflow: hidden;
-}
-
-.contato-glass {
-  position: relative;
-  z-index: 10;
-  max-width: 700px;
-  margin: 0 auto;
   padding: var(--spacing-xl) var(--spacing-md);
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
-  box-shadow: 
-    0 0 60px rgba(34, 211, 238, 0.08),
-    0 0 100px rgba(168, 85, 247, 0.05),
-    inset 0 0 60px rgba(255, 255, 255, 0.02);
-  animation: pulse-glow 4s ease-in-out infinite;
 }
 
 .contato-content {
@@ -29,7 +11,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
 }
 
 .section-title {
@@ -46,6 +28,15 @@
   margin-right: 0.5em;
 }
 
+.status-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  opacity: 0.8;
+}
+
 .contato-heading {
   font-size: 3rem;
   font-weight: 800;
@@ -58,6 +49,13 @@
 .contato-subheading {
   font-size: 1.1rem;
   color: var(--text-secondary);
+}
+
+.contato-message {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 500px;
 }
 
 .contato-email {
@@ -86,31 +84,44 @@
 }
 
 .contato-button {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  justify-content: center;
   padding: 1rem 2.5rem;
-  background: linear-gradient(135deg, rgba(34, 211, 238, 0.9) 0%, rgba(168, 85, 247, 0.9) 100%);
-  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
-  color: #05060A;
-  transition: all var(--transition-normal);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  color: #fff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.contato-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
 }
 
 .contato-button:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-glow-mixed);
+  border-color: rgba(34, 211, 238, 0.8);
+  box-shadow: 
+    0 0 20px rgba(34, 211, 238, 0.4),
+    0 0 40px rgba(34, 211, 238, 0.2),
+    0 0 60px rgba(168, 85, 247, 0.15);
+  transform: translateY(-2px);
 }
 
-.contato-button svg {
-  transition: transform var(--transition-fast);
-}
-
-.contato-button:hover svg {
-  transform: translate(3px, -3px);
+.contato-button:hover::before {
+  left: 100%;
 }
 
 @media (max-width: 768px) {
@@ -120,6 +131,11 @@
   
   .contato-subheading {
     font-size: 1rem;
+  }
+  
+  .contato-message {
+    font-size: 0.95rem;
+    padding: 0 1rem;
   }
   
   .contato-email {
