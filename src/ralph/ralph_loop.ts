@@ -1,6 +1,5 @@
 import process from 'node:process';
-import { RalphLoopOptions, RalphLoopState, Plan, PlanIngestor, TaskQueue, ResultCollector, IterationController, TaskResult, NotepadInterface } from './ralph_loop_utils.ts';
-import { Notepad } from './notepad.ts';
+import { RalphLoopOptions, RalphLoopState, Plan, PlanIngestor, TaskQueue, ResultCollector, IterationController, TaskResult } from './ralph_loop_utils.ts';
 
 /**
  * RalphLoop is a self-referential planning loop that repeatedly consumes the current plan,
@@ -45,15 +44,13 @@ export class RalphLoop {
   private queue: TaskQueue;
   private collector: ResultCollector;
   private controller: IterationController;
-  private notepad: NotepadInterface;
 
   constructor(
     options: Partial<RalphLoopOptions> = {},
     ingestor: PlanIngestor,
     queue: TaskQueue,
     collector: ResultCollector,
-    controller: IterationController,
-    notepad: NotepadInterface
+    controller: IterationController
   ) {
     this.options = {
       completionPromise: options.completionPromise ?? 'DONE',
@@ -70,7 +67,6 @@ export class RalphLoop {
     this.queue = queue;
     this.collector = collector;
     this.controller = controller;
-    this.notepad = notepad;
   }
 
   /**
@@ -142,9 +138,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const queue: TaskQueue = new MockTaskQueue();
   const collector: ResultCollector = new MockResultCollector();
   const controller: IterationController = new MockIterationController();
-  const notepad: NotepadInterface = new Notepad();
 
-  const loop = new RalphLoop(options, ingestor, queue, collector, controller, notepad);
+  const loop = new RalphLoop(options, ingestor, queue, collector, controller);
   loop.run(taskDescription).catch(err => {
     console.error(err);
     process.exit(1);
