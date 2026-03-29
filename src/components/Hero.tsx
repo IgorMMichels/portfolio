@@ -47,6 +47,11 @@ const Hero = memo(function Hero({ onVideoComplete }: HeroProps) {
     const video = videoRef.current
     if (!video) return
 
+    // Listen for video ended event
+    const onVideoEnded = () => {
+      handleVideoComplete()
+    }
+
     // Wait for video to be ready, then play
     const playVideo = async () => {
       try {
@@ -63,13 +68,11 @@ const Hero = memo(function Hero({ onVideoComplete }: HeroProps) {
       video.addEventListener('loadeddata', playVideo)
     }
 
-    // Set timeout for 4 seconds
-    const videoTimer = setTimeout(() => {
-      handleVideoComplete()
-    }, 4000)
+    // Listen for video end
+    video.addEventListener('ended', onVideoEnded)
 
     return () => {
-      clearTimeout(videoTimer)
+      video.removeEventListener('ended', onVideoEnded)
       video.removeEventListener('loadeddata', playVideo)
     }
   }, [handleVideoComplete])
