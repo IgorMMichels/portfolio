@@ -103,4 +103,23 @@ Run `npm run build` and `npm run dev` to ensure everything compiles. Open browse
 - [ ] Wave 6: Add unit tests for ParallaxScrolling component (renders with mock images)
 - [ ] Wave 6: Integrate automated tests for Lenis + GSAP sync (smoke test of scroll triggers)
 - [ ] Wave 6: End-to-end tests for Hero.jsx video scrubbing (timeline scrubbing correctness)
+
+### Wave 7: Implement CardsParallax UI (Scroll Cards) for Trabalhos
+
+- [ ] Task 7.1: Create `src/components/ui/scroll-cards.tsx` that renders a `CardsParallax` using a five-item dataset. Ensure 90vw container width at desktop, responsive behavior, and lazy-loaded images.
+- [ ] Task 7.2: Extend iCardItem to support `techStack: string[]` and `color`, `textColor`, and `image` fields; update dataset accordingly.
+- [ ] Task 7.3: Wire the dataset into `src/components/Trabalhos.jsx` to render the new scroll cards section (replace or augment existing `ImagesScrollingAnimation`).
+- [ ] Task 7.4: Add a simple Barrel export (e.g., `src/components/ui/index.ts`) to export `CardsParallax` for easy imports as `ui/scroll-cards`.
+- [ ] Task 7.5: Update tests to cover the new UI (unit test for 5-card render, Playwright smoke test for the 90vw container).
+
+### Wave 8: Testing & Verification
+- [ ] 1) Add unit tests for CardsParallax rendering (ensuring 5 cards render with correct props)
+- [ ] 2) Add Playwright end-to-end smoke test for the 90vw container in Trabalhos (scroll triggers and image lazy-loading)
+- [ ] 3) Validate accessibility: alt text on images and ARIA labels on icons
+- [ ] 4) Verify Lenis/GSAP integration remains stable after CardsParallax changes
+
+### Wave 9: Final Integration & Cleanup
+- [ ] 1) Confirm plan completeness and commit final changes
+- [ ] 2) Ensure barrel exports and imports resolve (ui/index.ts) and downstream imports across the app
+- [ ] 3) Run full build and basic sanity checks in CI
 ```
