@@ -1,67 +1,40 @@
 import process from 'node:process';
-import { RalphLoopOptions, RalphLoopState, Plan, PlanIngestor, TaskQueue, ResultCollector, IterationController } from './ralph_loop_utils.ts';
-import * as fs from 'fs/promises';
-import * as path from 'path';
+import { RalphLoopOptions, RalphLoopState, Plan, PlanIngestor, TaskQueue, ResultCollector, IterationController, TaskResult, NotepadInterface } from './ralph_loop_utils.ts';
+import { Notepad } from './notepad.ts';
 
 /**
  * RalphLoop is a self-referential planning loop that repeatedly consumes the current plan,
  * queues tasks, collects results, and emits a completion signal.
  */
-// Minimal in-process implementations for scaffolding
-class FSPlanIngestor implements PlanIngestor {
+// Minimal mock implementations for scaffolding
+class MockPlanIngestor implements PlanIngestor {
   async ingest(): Promise<Plan> {
-    // Look for a plan file in .sisyphus/plans; prefer a dedicated 'ralph-loop' plan if present
-    const plansDir = path.resolve('.sisyphus', 'plans');
-    let planPath: string | null = null;
-    try {
-      const files = await fs.readdir(plansDir);
-      // Prefer a file named 'ralph-loop.md' if present, otherwise take the first .md file
-      const named = files.find(f => f.toLowerCase() === 'ralph-loop.md');
-      if (named) planPath = path.join(plansDir, named);
-      else {
-        const md = files.find(f => f.endsWith('.md'));
-        if (md) planPath = path.join(plansDir, md);
-      }
-    } catch {
-      // no plans directory or unreadable; fall back to an empty plan
-      planPath = null;
-    }
-
-    if (!planPath) {
-      return { tasks: [] } as Plan;
-    }
-
-    const content = await fs.readFile(planPath, 'utf8');
-    const lines = content.split(/\r?\n/);
-    // Extract top-level tasks that are marked as incomplete or completed
-    const tasks = lines
-      .filter(l => /^- \[[ x]\]\s+/.test(l))
-      .map(l => l.replace(/^- \[[ x]\]\s+/, '').trim())
-      .filter(Boolean);
-    return { tasks } as Plan;
+    // Returns a minimal plan for scaffolding
+    return { tasks: ['scaffold-task'] } as Plan;
   }
 }
 
-class SimpleTaskQueue implements TaskQueue {
+class MockTaskQueue implements TaskQueue {
   async queue(plan: Plan): Promise<string[]> {
     return plan.tasks ?? [];
   }
 }
 
-class SimpleResultCollector implements ResultCollector {
-  async collect(tasks: string[]): Promise<string[]> {
+class MockResultCollector implements ResultCollector {
+  async collect(tasks: string[]): Promise<TaskResult[]> {
     // Simple synthetic results to simulate delegation outcomes
-    return tasks.map(t => `done:${t}`);
+    return tasks.map(t => ({
+      taskId: t,
+      status: 'completed',
+      output: `done:${t}`
+    }));
   }
 }
 
-class SimpleIterationController implements IterationController {
-  async shouldStop(state: RalphLoopState, plan: Plan): Promise<boolean> {
-    if (!plan || !plan.tasks) return true;
-    const total = plan.tasks.length;
-    const completed = state.results.length;
-    if (total > 0 && completed >= total) return true;
-    return false;
+class MockIterationController implements IterationController {
+  async shouldStop(state: RalphLoopState, _plan: Plan): Promise<boolean> {
+    // Stop after one iteration for the scaffold
+    return state.iteration >= 1;
   }
 }
 
@@ -72,13 +45,15 @@ export class RalphLoop {
   private queue: TaskQueue;
   private collector: ResultCollector;
   private controller: IterationController;
+  private notepad: NotepadInterface;
 
   constructor(
     options: Partial<RalphLoopOptions> = {},
     ingestor: PlanIngestor,
     queue: TaskQueue,
     collector: ResultCollector,
-    controller: IterationController
+    controller: IterationController,
+    notepad: NotepadInterface
   ) {
     this.options = {
       completionPromise: options.completionPromise ?? 'DONE',
@@ -90,13 +65,12 @@ export class RalphLoop {
       isComplete: false,
       tasks: [],
       results: [],
-      planName: undefined,
-      currentIndex: 0,
     };
     this.ingestor = ingestor;
     this.queue = queue;
     this.collector = collector;
     this.controller = controller;
+    this.notepad = notepad;
   }
 
   /**
@@ -116,9 +90,6 @@ export class RalphLoop {
 
       // 1. Plan Ingestion
       const plan = await this.ingestor.ingest();
-      // store plan name if available
-      // (Plan type allows dynamic properties; store for debugging)
-      (this.state as any).planName = (plan as any).name ?? (plan as any).planName ?? 'ralph-loop';
 
       // 2. Task Queuing
       const tasks = await this.queue.queue(plan);
@@ -137,15 +108,8 @@ export class RalphLoop {
       }
     }
 
+    // Final completion emission hook
     console.log(`<promise>${this.options.completionPromise}</promise>`);
-
-    // Persist final state proactively
-    try {
-      const statePath = path.resolve('.sisyphus', 'ralph_loop', 'state.json');
-      await fs.writeFile(statePath, JSON.stringify(this.state, null, 2), 'utf8').catch(() => {});
-    } catch {
-      // ignore persistence errors in this scaffolding
-    }
   }
 
   public getState(): RalphLoopState {
@@ -173,13 +137,14 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     }
   }
 
-  // Minimal implementations for the scaffold
-  const ingestor: PlanIngestor = new FSPlanIngestor();
-  const queue: TaskQueue = new SimpleTaskQueue();
-  const collector: ResultCollector = new SimpleResultCollector();
-  const controller: IterationController = new SimpleIterationController();
+  // Use mock implementations for the scaffold
+  const ingestor: PlanIngestor = new MockPlanIngestor();
+  const queue: TaskQueue = new MockTaskQueue();
+  const collector: ResultCollector = new MockResultCollector();
+  const controller: IterationController = new MockIterationController();
+  const notepad: NotepadInterface = new Notepad();
 
-  const loop = new RalphLoop(options, ingestor, queue, collector, controller);
+  const loop = new RalphLoop(options, ingestor, queue, collector, controller, notepad);
   loop.run(taskDescription).catch(err => {
     console.error(err);
     process.exit(1);

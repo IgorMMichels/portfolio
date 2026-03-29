@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { RalphLoop } from '../src/ralph/ralph_loop.ts';
-import { PlanIngestor, TaskQueue, ResultCollector, IterationController, RalphLoopState, Plan } from '../src/ralph/ralph_loop_utils.ts';
+import { PlanIngestor, TaskQueue, ResultCollector, IterationController, RalphLoopState, Plan, TaskResult } from '../src/ralph/ralph_loop_utils.ts';
 
 describe('RalphLoop', () => {
   it('should initialize with default options', () => {
@@ -19,7 +19,9 @@ describe('RalphLoop', () => {
   it('should run for at least one iteration and emit completion signal', async () => {
     const ingestor: PlanIngestor = { ingest: vi.fn().mockResolvedValue({ tasks: ['task1'] }) };
     const queue: TaskQueue = { queue: vi.fn().mockResolvedValue(['task1']) };
-    const collector: ResultCollector = { collect: vi.fn().mockResolvedValue(['result1']) };
+    const collector: ResultCollector = { 
+      collect: vi.fn().mockResolvedValue([{ taskId: 'task1', status: 'completed', output: 'done' } as TaskResult]) 
+    };
     const controller: IterationController = { 
       shouldStop: vi.fn().mockImplementation((state: RalphLoopState) => state.iteration >= 1) 
     };

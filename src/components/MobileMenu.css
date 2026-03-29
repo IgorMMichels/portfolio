@@ -1,0 +1,47 @@
+.mobile-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(80%, 320px);
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+  padding: 1rem 1rem 2rem 1rem;
+}
+.mobile-drawer-close {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.mobile-drawer nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 0;
+}
+.mobile-drawer nav ul li {
+  margin: 12px 0;
+}
+.mobile-drawer nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+/* Responsive: hide mobile drawer on large viewports by default */
+@media (min-width: 769px) {
+  .mobile-drawer, .mobile-drawer-overlay { display: none; }
+}

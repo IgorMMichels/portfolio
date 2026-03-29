@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion"
 import { useRef } from "react"
-import * as Icons from '@icons-pack/react-simple-icons'
+import { SiReact, SiTypescript, SiHtml5, SiCss, SiJavascript, SiVuedotjs, SiNodedotjs, SiPython, SiMysql, SiPostgresql, SiLua } from '@icons-pack/react-simple-icons'
 
 export interface Project {
   id: number
@@ -20,17 +20,17 @@ interface ImagesScrollingAnimationProps {
 // Tech icon mapping - same as SobreMim section
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const iconMap: Record<string, any> = {
-  'React': Icons.SiReact,
-  'Vue.js': Icons.SiVuedotjs,
-  'HTML': Icons.SiHtml5,
-  'CSS': Icons.SiCss,
-  'JavaScript': Icons.SiJavascript,
-  'Node.js': Icons.SiNodedotjs,
-  'Python': Icons.SiPython,
-  'MySQL': Icons.SiMysql,
-  'PostgreSQL': Icons.SiPostgresql,
-  'Lua': Icons.SiLua,
-  'TypeScript': Icons.SiTypescript,
+  'React': SiReact,
+  'Vue.js': SiVuedotjs,
+  'HTML': SiHtml5,
+  'CSS': SiCss,
+  'JavaScript': SiJavascript,
+  'Node.js': SiNodedotjs,
+  'Python': SiPython,
+  'MySQL': SiMysql,
+  'PostgreSQL': SiPostgresql,
+  'Lua': SiLua,
+  'TypeScript': SiTypescript,
 }
 
 const getTechIcon = (tech: string) => {
@@ -38,7 +38,7 @@ const getTechIcon = (tech: string) => {
   if (IconComponent) {
     return <IconComponent size={20} />
   }
-  return <Icons.SiJavascript size={20} />
+  return <SiJavascript size={20} />
 }
 
 const StickyCard = ({

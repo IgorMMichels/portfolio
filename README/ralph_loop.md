@@ -17,16 +17,29 @@ The Ralph Loop follows a simple iteration cycle:
 - `--max-iterations`: The maximum number of iterations to run (default: `100`).
 - `--strategy`: The strategy to use when starting the loop (`reset` or `continue`).
 
+## Interfaces
+
+The loop is built around several key interfaces defined in `src/ralph/ralph_loop_utils.ts`:
+
+- `PlanIngestor`: Responsible for reading the plan.
+- `TaskQueue`: Responsible for identifying tasks to be executed.
+- `ResultCollector`: Responsible for executing tasks and collecting `TaskResult` objects.
+- `IterationController`: Responsible for determining if the loop should terminate.
+
 ## Extension
 
-To extend the Ralph Loop, you can:
-- Implement custom `PlanIngestor` to support different plan formats.
-- Implement custom `TaskQueue` to handle different types of tasks.
-- Implement custom `ResultCollector` to process task results.
-- Implement custom `IterationController` to change the loop's behavior.
+To extend the Ralph Loop, you can implement these interfaces with actual logic (e.g., file I/O, API calls, etc.) and inject them into the `RalphLoop` constructor.
 
 ## Usage
 
 ```bash
 ts-node src/ralph/ralph_loop.ts "task description" --completion-promise=FINISHED --max-iterations=50 --strategy=continue
+```
+
+## Testing
+
+Run the unit tests to verify the loop's behavior:
+
+```bash
+npx vitest tests/ralph_loop.test.ts
 ```

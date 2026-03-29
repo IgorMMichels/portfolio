@@ -3,6 +3,8 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useLenis } from './ui/smooth-scroll'
 import './Header.css'
+import MobileMenu from './MobileMenu'
+import './MobileMenu.css'
 
 const navItems = [
   { id: 'inicio', label: 'Início' },
@@ -16,6 +18,7 @@ export default function Header() {
   const [activeSection, setActiveSection] = useState('inicio')
   const headerRef = useRef(null)
   const navRef = useRef(null)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -103,7 +106,16 @@ export default function Header() {
             </button>
           ))}
         </nav>
+        {/* Mobile Menu Toggle */}
+        <button aria-label="Open mobile menu" aria-expanded={Boolean(mobileOpen)} aria-controls="mobile-drawer" className="mobile-menu-btn" onClick={() => setMobileOpen(true)}>
+          <span className="hamburger" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </button>
       </div>
+      <MobileMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
     </header>
   )
 }
