@@ -7,6 +7,7 @@ import Contato from './components/Contato'
 import SocialSidebar from './components/SocialSidebar'
 import Footer from './components/Footer'
 import { LoadingScreen } from './components/ui/LoadingScreen'
+import { Cursor } from './components/ui/inverted-cursor'
 import { useState } from 'react'
 import { SmoothScroll } from './components/ui/smooth-scroll'
 import './App.css'
@@ -33,20 +34,25 @@ function App() {
   return (
     <SmoothScroll initialLock={videoStarted}>
       {isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
-      <div className={`app transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
-        <Header />
-        <SocialSidebar />
-        
-        <main>
-          <Hero onVideoComplete={handleVideoComplete} />
-          <SobreMim />
-          <Timeline />
-          <Trabalhos />
-          <Contato />
-        </main>
+      {!isLoading && (
+        <>
+          <Cursor />
+          <div className="app">
+            <Header />
+            <SocialSidebar />
+            
+            <main>
+              <Hero onVideoComplete={handleVideoComplete} />
+              <SobreMim />
+              <Timeline />
+              <Trabalhos />
+              <Contato />
+            </main>
 
-        <Footer />
-      </div>
+            <Footer />
+          </div>
+        </>
+      )}
     </SmoothScroll>
   )
 }

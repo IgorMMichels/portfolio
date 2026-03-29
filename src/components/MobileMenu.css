@@ -35,10 +35,17 @@
 .mobile-drawer nav ul li {
   margin: 12px 0;
 }
-.mobile-drawer nav ul li a {
+.mobile-drawer nav ul li a,
+.mobile-drawer nav ul li button {
   text-decoration: none;
   color: #333;
   font-size: 1.1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 0;
+  width: 100%;
+  text-align: left;
 }
 
 /* Responsive: hide mobile drawer on large viewports by default */

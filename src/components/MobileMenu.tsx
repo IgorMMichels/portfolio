@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useLenis } from 'lenis/react';
 
 type MobileMenuProps = {
   isOpen: boolean;
@@ -7,6 +8,15 @@ type MobileMenuProps = {
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const drawerRef = useRef<HTMLDivElement>(null);
+  const lenis = useLenis();
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element && lenis) {
+      lenis.scrollTo(element, { offset: -80, duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    }
+    onClose();
+  };
   const focusable = () => {
     if (!drawerRef.current) return [] as HTMLElement[];
     return Array.from(drawerRef.current.querySelectorAll<HTMLElement>("a, button"));
@@ -47,11 +57,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
         <button className="mobile-drawer-close" onClick={onClose} aria-label="Close menu">×</button>
         <nav>
           <ul>
-            <li><a href="#inicio" onClick={onClose}>Início</a></li>
-            <li><a href="#sobre" onClick={onClose}>Sobre</a></li>
-            <li><a href="#timeline" onClick={onClose}>Timeline</a></li>
-            <li><a href="#trabalhos" onClick={onClose}>Trabalhos</a></li>
-            <li><a href="#contato" onClick={onClose}>Contato-me</a></li>
+            <li><button onClick={() => scrollToSection('inicio')}>Início</button></li>
+            <li><button onClick={() => scrollToSection('timeline')}>Timeline</button></li>
+            <li><button onClick={() => scrollToSection('trabalhos')}>Trabalhos</button></li>
+            <li><button onClick={() => scrollToSection('contato')}>Contate-me</button></li>
           </ul>
         </nav>
       </aside>

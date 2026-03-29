@@ -129,7 +129,7 @@ const Card = React.forwardRef<HTMLDivElement, { item: iCardItem; index: number }
     return (
       <div 
         ref={ref}
-        className="card-parallax-item absolute flex flex-col md:flex-row items-stretch justify-between w-[85vw] max-w-5xl rounded-2xl overflow-hidden shadow-2xl border border-white/10 transition-shadow"
+        className="card-parallax-item absolute flex flex-col md:flex-row items-stretch justify-between w-[85vw] max-w-5xl rounded-2xl overflow-hidden shadow-2xl border border-white/10 transition-all duration-500 group"
         style={{ 
           backgroundColor: item.color,
           color: item.textColor,
@@ -140,7 +140,10 @@ const Card = React.forwardRef<HTMLDivElement, { item: iCardItem; index: number }
           transform: 'translate(-50%, -50%)',
         }}
       >
-        <div className="flex-1 p-6 md:p-10 lg:p-12 flex flex-col justify-center gap-4">
+        {/* Dark overlay that appears on hover */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-500 z-10 pointer-events-none" />
+        
+        <div className="flex-1 p-6 md:p-10 lg:p-12 flex flex-col justify-center gap-4 relative z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0">
           <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight">{item.title}</h3>
           <p className="text-sm md:text-base opacity-90 leading-relaxed max-w-lg">
             {item.description}

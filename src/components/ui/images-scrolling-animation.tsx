@@ -90,14 +90,15 @@ const StickyCard = ({
         }}
         className="group relative -top-1/4 flex origin-top flex-col overflow-hidden rounded-lg
                    max-w-screen
-                   bg-neutral-900"
+                   bg-neutral-900
+                   outline-none"
       >
         {/* Full card clickable link */}
         <a 
           href={link}
           target="_blank"
           rel="noopener noreferrer"
-          className="block h-full w-full"
+          className="block h-full w-full outline-none"
         >
           {/* Image with text overlay - full height */}
           <div className="relative h-screen w-full overflow-hidden">
@@ -107,11 +108,11 @@ const StickyCard = ({
               className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" 
             />
             
-            {/* Overlay - lighter, darkens on hover */}
-            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors duration-300" />
+            {/* Overlay - fully dark on hover */}
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/80 transition-all duration-500" />
             
-            {/* Text content inside image - centered, bigger and cleaner */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-8 sm:p-12 lg:p-16 text-center gap-6">
+            {/* Text content inside image - centered, bigger and cleaner - hidden by default, shown on hover */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-8 sm:p-12 lg:p-16 text-center gap-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
               <h3 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight">{title}</h3>
               <p className="text-base sm:text-lg text-neutral-200 line-clamp-2 max-w-lg">{description}</p>
             

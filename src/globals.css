@@ -150,17 +150,24 @@
 }
 /* Mobile scrollbar visual cleanup: hide scrollbars on small viewports while preserving touch scrolling */
 @media (max-width: 768px) {
+  /* Hide custom scrollbar on mobile */
+  .custom-scrollbar {
+    display: none !important;
+  }
+  
   /* Firefox */
   html {
     scrollbar-width: none;
   }
   /* WebKit-based browsers (Chrome, Safari) */
   html::-webkit-scrollbar {
-    width: 0;
-    height: 0;
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
   }
   /* Ensure smooth touch scrolling remains enabled on mobile bodies */
   body {
     -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
   }
 }

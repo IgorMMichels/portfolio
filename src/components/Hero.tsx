@@ -17,6 +17,17 @@ const Hero = memo(function Hero({ onVideoComplete }: HeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [videoEnded, setVideoEnded] = useState(false)
   const [showContent, setShowContent] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect mobile on client side
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Ensure we're hooked into the Lenis lifecycle
   useLenis()
@@ -109,14 +120,16 @@ const Hero = memo(function Hero({ onVideoComplete }: HeroProps) {
   return (
     <section id="inicio" ref={heroRef} className="hero">
       <div className="hero-video-container">
-        {!videoEnded ? (
+        {/* On mobile, always show video (even if not playing) - don't switch to static image */}
+        {!videoEnded || isMobile ? (
           <video
             ref={videoRef}
             src="/assets/VideoIgor.mp4"
             className="hero-video"
             muted
             playsInline
-            loop={false}
+            loop={isMobile ? true : false}
+            autoPlay={!isMobile}
           />
         ) : (
           <img 
