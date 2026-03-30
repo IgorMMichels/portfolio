@@ -63,11 +63,40 @@ export const Cursor: React.FC<CursorProps> = ({ size = 18 }) => {
       return true
     }
 
-    // Check parent chain for scrollbar related elements
+    // Hide on interactive elements (buttons, links, inputs, etc.)
+    const tagName = target.tagName.toLowerCase()
+    const interactiveElements = ['button', 'a', 'input', 'textarea', 'select', 'label']
+    if (interactiveElements.includes(tagName)) {
+      return true
+    }
+
+    // Check for elements with onclick, or cursor: pointer
+    const style = window.getComputedStyle(target)
+    if (style.cursor === 'pointer' || style.cursor === 'grab' || style.cursor === 'grabbing') {
+      return true
+    }
+
+    // Check parent chain for interactive elements
     let parent = target.parentElement
     while (parent) {
-      const style = window.getComputedStyle(parent)
-      if (style.overflow === 'scroll' || style.overflowY === 'scroll' || style.overflowX === 'scroll') {
+      const parentStyle = window.getComputedStyle(parent)
+      const parentTagName = parent.tagName.toLowerCase()
+      if (
+        interactiveElements.includes(parentTagName) ||
+        parentStyle.cursor === 'pointer' ||
+        parentStyle.cursor === 'grab' ||
+        parentStyle.cursor === 'grabbing'
+      ) {
+        return true
+      }
+      parent = parent.parentElement
+    }
+
+    // Check parent chain for scrollbar related elements
+    parent = target.parentElement
+    while (parent) {
+      const parentStyle = window.getComputedStyle(parent)
+      if (parentStyle.overflow === 'scroll' || parentStyle.overflowY === 'scroll' || parentStyle.overflowX === 'scroll') {
         // Check if we're near the scrollbar area
         const rect = parent.getBoundingClientRect()
         if (e.clientX >= rect.right - 25) {
