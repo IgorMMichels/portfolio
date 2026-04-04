@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
+ScrollTrigger.normalizeScroll(true)
 
 // Scroll lock context for controlling scroll freezing
 const ScrollLockContext = createContext<{
@@ -11,7 +12,7 @@ const ScrollLockContext = createContext<{
   setLocked: (locked: boolean) => void
 }>({
   isLocked: false,
-  setLocked: () => {}
+  setLocked: () => { }
 })
 
 export function useScrollLock() {
@@ -78,7 +79,7 @@ function LenisSync({ isLocked }: { isLocked?: boolean }) {
     }
 
     gsap.ticker.add(updateLenis)
-    gsap.ticker.lagSmoothing(0)
+    gsap.ticker.lagSmoothing(1000, 16)
 
     const timer = setTimeout(() => {
       ScrollTrigger.refresh()
@@ -104,14 +105,14 @@ function CustomScrollbar() {
     const scrollbar = document.querySelector('.custom-scrollbar-thumb') as HTMLElement
     const scrollbarTrack = document.querySelector('.custom-scrollbar') as HTMLElement
     if (!scrollbar || !scrollbarTrack) return
-    
+
     const updateScrollbar = () => {
       const currentScrollHeight = document.documentElement.scrollHeight - window.innerHeight
       if (currentScrollHeight <= 0) return
-      
+
       const progress = lenis.scroll / currentScrollHeight
       const thumbHeight = Math.max(40, (window.innerHeight / document.documentElement.scrollHeight) * window.innerHeight)
-      
+
       gsap.set(scrollbar, {
         height: thumbHeight,
         y: progress * (window.innerHeight - thumbHeight),
@@ -133,11 +134,11 @@ function CustomScrollbar() {
 
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return
-      
+
       const deltaY = e.clientY - startY
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
       const scrollDelta = (deltaY / window.innerHeight) * scrollHeight
-      
+
       lenis.scrollTo(startScroll + scrollDelta, { immediate: true })
     }
 
@@ -150,12 +151,12 @@ function CustomScrollbar() {
     // Click to jump
     const handleClick = (e: MouseEvent) => {
       if (isDragging) return
-      
+
       const rect = scrollbarTrack.getBoundingClientRect()
       const clickY = e.clientY - rect.top
       const progress = clickY / window.innerHeight
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
-      
+
       lenis.scrollTo(progress * scrollHeight, { duration: 0.5 })
     }
 

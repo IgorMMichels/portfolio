@@ -70,7 +70,7 @@ const StickyCard = ({
   const totalCards = 5
   const isFirst = i === 0
   const isLast = i === totalCards - 1
-  
+
   // First: no rotation, Middle: alternate, Last: opposite rotation to show expansion
   const rotate = isFirst ? 0 : isLast ? 0.5 : (i % 2 === 1 ? -0.5 : 0.5)
   // Background cards are wider to show stacking effect
@@ -87,6 +87,7 @@ const StickyCard = ({
           rotate,
           top: `calc(-5vh + ${i * 15 + 200}px)`,
           width: cardWidth,
+          willChange: 'transform, opacity',
         }}
         className="group relative -top-1/4 flex origin-top flex-col overflow-hidden rounded-lg
                    max-w-screen
@@ -94,7 +95,7 @@ const StickyCard = ({
                    outline-none"
       >
         {/* Full card clickable link */}
-        <a 
+        <a
           href={link}
           target="_blank"
           rel="noopener noreferrer"
@@ -102,20 +103,22 @@ const StickyCard = ({
         >
           {/* Image with text overlay - full height */}
           <div className="relative h-screen w-full overflow-hidden">
-            <img 
-              src={src || "/placeholder.svg"} 
-              alt={title} 
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" 
+            <img
+              src={src || "/placeholder.svg"}
+              alt={title}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            
+
             {/* Overlay - fully dark on hover */}
             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/80 transition-all duration-500" />
-            
+
             {/* Text content inside image - centered, bigger and cleaner - hidden by default, shown on hover */}
             <div className="absolute inset-0 flex flex-col items-center justify-center p-8 sm:p-12 lg:p-16 text-center gap-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
               <h3 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight">{title}</h3>
               <p className="text-base sm:text-lg text-neutral-200 line-clamp-2 max-w-lg">{description}</p>
-            
+
               {/* Tech stack icons - EXACTLY like SobreMim section */}
               <style>{`
                 @keyframes iconFloat {
@@ -177,8 +180,8 @@ const StickyCard = ({
               `}</style>
               <div className="flex flex-wrap gap-2 justify-center mt-4">
                 {tech.slice(0, 4).map((t) => (
-                  <span 
-                    key={t} 
+                  <span
+                    key={t}
                     className="card-skill-tag"
                     title={t}
                   >
