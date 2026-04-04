@@ -51,6 +51,7 @@ const StickyCard = ({
   progress,
   range,
   targetScale,
+  totalCards,
 }: {
   i: number
   title: string
@@ -61,13 +62,12 @@ const StickyCard = ({
   progress: any
   range: [number, number]
   targetScale: number
+  totalCards: number
 }) => {
   const container = useRef<HTMLDivElement>(null)
 
   const scale = useTransform(progress, range, [1, targetScale])
 
-  // Alternating rotation: first and last = 100% width, middle cards alternate
-  const totalCards = 5
   const isFirst = i === 0
   const isLast = i === totalCards - 1
 
@@ -102,7 +102,7 @@ const StickyCard = ({
           className="block h-full w-full outline-none"
         >
           {/* Image with text overlay - full height */}
-          <div className="relative h-screen w-full overflow-hidden">
+          <div className="relative aspect-video w-full overflow-hidden">
             <img
               src={src || "/placeholder.svg"}
               alt={title}
@@ -223,8 +223,9 @@ const ImagesScrollingAnimation = ({ projects }: ImagesScrollingAnimationProps) =
             tech={project.tech}
             link={project.link}
             progress={scrollYProgress}
-            range={[i * 0.2, 1]}
+            range={[i * (1 / projects.length), 1]}
             targetScale={targetScale}
+            totalCards={projects.length}
           />
         )
       })}

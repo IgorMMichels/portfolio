@@ -28,14 +28,6 @@ const projects = [
   },
   {
     id: 4,
-    image: '/assets/cecy.webp',
-    title: 'CECY Advocacia',
-    description: 'Website feito para o escritório especializado de advocacia do Matheus Cecy, com foco em captar mais clientes para seu negócio.',
-    tech: ['HTML', 'CSS', 'JavaScript'],
-    link: 'https://cecy.adv.br/',
-  },
-  {
-    id: 5,
     image: '/assets/fitlyApp.webp',
     title: 'FitlyApp',
     description: 'Projeto escolar desenvolvido para o IFC, com foco em auxiliar no processo de emagrecimento através de uma plataforma digital.',
@@ -43,12 +35,20 @@ const projects = [
     link: 'https://fitlyapp.com.br',
   },
   {
-    id: 6,
+    id: 5,
     image: '/assets/imok.webp',
     title: 'Imok',
     description: 'Projeto pessoal voltado para um futuro empreendimento, com foco em facilitar o contato com clientes e permitir assinatura de serviços diretamente pelo site.',
     tech: ['React', 'TypeScript', 'PostgreSQL'],
     link: 'https://imok.vercel.app',
+  },
+  {
+    id: 6,
+    image: '/assets/cecy.webp',
+    title: 'CECY Advocacia',
+    description: 'Website feito para o escritório especializado de advocacia do Matheus Cecy, com foco em captar mais clientes para seu negócio.',
+    tech: ['HTML', 'CSS', 'JavaScript'],
+    link: 'https://cecy.adv.br/',
   }
 ]
 
