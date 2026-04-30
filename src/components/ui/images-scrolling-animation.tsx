@@ -71,10 +71,10 @@ const StickyCard = ({
   const isFirst = i === 0
   const isLast = i === totalCards - 1
 
-  // First: no rotation, Middle: alternate, Last: opposite rotation to show expansion
-  const rotate = isFirst ? 0 : isLast ? 0.5 : (i % 2 === 1 ? -0.5 : 0.5)
-  // Background cards are wider to show stacking effect
-  const cardWidth = i > 0 ? `${99 + i * 2}vw` : '99vw'
+  // Mobile: no rotation, simpler stacking
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 769
+  const rotate = isMobile ? 0 : isFirst ? 0 : isLast ? 0.5 : (i % 2 === 1 ? -0.5 : 0.5)
+  const cardWidth = isMobile ? '100%' : (i > 0 ? `${99 + i * 2}vw` : '99vw')
 
   return (
     <div
@@ -89,10 +89,9 @@ const StickyCard = ({
           width: cardWidth,
           willChange: 'transform, opacity',
         }}
-        className="group relative -top-1/4 flex origin-top flex-col overflow-hidden rounded-lg
-                   max-w-screen
+        className={`group relative -top-1/4 flex origin-top flex-col overflow-hidden rounded-lg
                    bg-neutral-900
-                   outline-none"
+                   outline-none w-[min(100%,900px)] mx-auto`}
       >
         {/* Full card clickable link */}
         <a
