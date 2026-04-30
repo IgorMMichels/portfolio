@@ -3,23 +3,23 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useLenis } from 'lenis/react'
 import './Hero.css'
+import MobileVideoPlayButton from './ui/MobileVideoPlayButton'
 
-// Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger)
 
 interface HeroProps {
-  onVideoComplete?: () => void
+  onVideoComplete?: () => void;
 }
 
 const Hero = memo(function Hero({ onVideoComplete }: HeroProps) {
-  const heroRef = useRef(null)
-  const contentRef = useRef(null)
+  const heroRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [videoEnded, setVideoEnded] = useState(false)
   const [showContent, setShowContent] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [mobilePlaying, setMobilePlaying] = useState(false)
 
-  // Detect mobile on client side
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768)
@@ -29,25 +29,21 @@ const Hero = memo(function Hero({ onVideoComplete }: HeroProps) {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Ensure we're hooked into the Lenis lifecycle
   useLenis()
 
-  // Handle video completion
   const handleVideoComplete = useCallback(() => {
     const video = videoRef.current
     if (video) {
-      // Clean up video from memory
       video.pause()
       video.removeAttribute('src')
       video.load()
-      // Force garbage collection hint
       video.src = ''
     }
 
     if (!videoEnded) {
       setVideoEnded(true)
       setShowContent(true)
-      
+
       if (onVideoComplete) {
         onVideoComplete()
       }
@@ -58,44 +54,63 @@ const Hero = memo(function Hero({ onVideoComplete }: HeroProps) {
     const video = videoRef.current
     if (!video) return
 
-    // Listen for video ended event
-    const onVideoEnded = () => {
+    const onEnded = () => {
       handleVideoComplete()
     }
 
-    // Wait for video to be ready, then play
     const playVideo = async () => {
       try {
         await video.play()
       } catch (e) {
-        // Auto-play was prevented, fallback to timer
         console.log('Auto-play prevented, using timer fallback')
       }
     }
 
-    // On desktop, allow auto-play; on mobile, do not auto-play
     if (!isMobile) {
       if (video.readyState >= 2) {
         playVideo()
       } else {
         video.addEventListener('loadeddata', playVideo)
       }
-      // Listen for video end
-      video.addEventListener('ended', onVideoEnded)
+      video.addEventListener('ended', onEnded)
     }
 
     return () => {
-      video.removeEventListener('ended', onVideoEnded)
+      video.removeEventListener('ended', onEnded)
       video.removeEventListener('loadeddata', playVideo)
-      video.removeEventListener('ended', onVideoEnded)
     }
   }, [handleVideoComplete, isMobile])
+
+  const handleMobilePlay = useCallback(() => {
+    const video = videoRef.current
+    if (!video) return
+    setMobilePlaying(true)
+    video.play().catch(() => {
+      setMobilePlaying(false)
+    })
+  }, [])
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video || !isMobile) return
+
+    const onEnded = () => {
+      handleVideoComplete()
+    }
+
+    if (mobilePlaying) {
+      video.addEventListener('ended', onEnded)
+    }
+
+    return () => {
+      video.removeEventListener('ended', onEnded)
+    }
+  }, [handleVideoComplete, isMobile, mobilePlaying])
 
   useEffect(() => {
     if (!showContent) return
 
     const ctx = gsap.context(() => {
-      // Content appears after video
       gsap.from(['.hero-greeting', '.hero-name', '.hero-roles', '.hero-scroll-indicator'], {
         y: 30,
         opacity: 0,
@@ -104,7 +119,6 @@ const Hero = memo(function Hero({ onVideoComplete }: HeroProps) {
         ease: 'power3.out'
       })
 
-      // Content fade out on scroll
       gsap.to(contentRef.current, {
         scrollTrigger: {
           trigger: heroRef.current,
@@ -123,22 +137,26 @@ const Hero = memo(function Hero({ onVideoComplete }: HeroProps) {
   return (
     <section id="inicio" ref={heroRef} className="hero">
       <div className="hero-video-container">
-        {/* On mobile, always show video (even if not playing) - don't switch to static image */}
-        {!videoEnded || isMobile ? (
-          <video
-            ref={videoRef}
-            src="/assets/VideoIgor.mp4"
-            className="hero-video"
-            muted
-            playsInline
-            loop={false}
-            autoPlay={false}
-            poster="/assets/VideoIgor-last-frame.jpg"
-          />
+        {!videoEnded ? (
+          <>
+            <video
+              ref={videoRef}
+              src="/assets/VideoIgor.mp4"
+              className="hero-video"
+              muted
+              playsInline
+              loop={false}
+              autoPlay={false}
+              poster="/assets/VideoIgor-last-frame.jpg"
+            />
+            {isMobile && !mobilePlaying && (
+              <MobileVideoPlayButton onPlay={handleMobilePlay} />
+            )}
+          </>
         ) : (
-          <img 
-            src="/assets/VideoIgor-last-frame.jpg" 
-            alt="Igor Michels" 
+          <img
+            src="/assets/VideoIgor-last-frame.jpg"
+            alt="Igor Michels"
             className="hero-video"
           />
         )}
