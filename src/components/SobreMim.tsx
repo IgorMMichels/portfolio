@@ -1,17 +1,16 @@
 import { useRef, useEffect } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import * as Icons from '@icons-pack/react-simple-icons'
 import { Cpu, Code2, Sparkles } from 'lucide-react'
 import './SobreMim.css'
 
 const sobreTexto = `Sou desenvolvedor front-end com experiência em HTML, CSS e JavaScript, além de conhecimentos em Node.js e Vue.js. Estou em constante evolução, aprofundando meus estudos em tecnologias como JavaScript, Python, Lua, MySQL, Node.js e Vue.js, com foco em criar aplicações eficientes e escaláveis. Tenho grande interesse por inteligência artificial, já tendo explorado ferramentas como MCP Servers, Claude Code e Open Code, além de estar iniciando em prompt engineering. Busco unir desenvolvimento e automação para criar soluções modernas, funcionais e com impacto real, desenvolvendo não apenas aplicações, mas sistemas que resolvem problemas e geram valor.`
 
-const iconMap: Record<string, React.ComponentType<{ size?: number }>> = {
+const iconMap: Record<string, React.ComponentType<any>> = {
   'React': Icons.SiReact,
   'Vue.js': Icons.SiVuedotjs,
   'HTML': Icons.SiHtml5,
-  'CSS': Icons.SiCss3,
+  'CSS': Icons.SiCss,
   'JavaScript': Icons.SiJavascript,
   'Node.js': Icons.SiNodedotjs,
   'Python': Icons.SiPython,

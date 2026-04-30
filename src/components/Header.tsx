@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useLenis } from './ui/smooth-scroll'
 import './Header.css'
 import MobileMenu from './MobileMenu'

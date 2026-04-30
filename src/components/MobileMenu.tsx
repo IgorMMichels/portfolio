@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLenis } from 'lenis/react';
 
 type NavItem = { id: string; label: string };
 
@@ -13,7 +12,6 @@ type MobileMenuProps = {
 export default function MobileMenu({ isOpen, onClose, navItems, onNavigate }: MobileMenuProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
   const previousFocus = useRef<HTMLElement | null>(null);
-  const lenis = useLenis();
   const [closing, setClosing] = useState(false);
 
   const handleNavigate = (id: string) => {
