@@ -1,37 +1,50 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLenis } from 'lenis/react';
+
+type NavItem = { id: string; label: string };
 
 type MobileMenuProps = {
   isOpen: boolean;
   onClose: () => void;
+  navItems: readonly NavItem[];
+  onNavigate: (id: string) => void;
 };
 
-const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
+export default function MobileMenu({ isOpen, onClose, navItems, onNavigate }: MobileMenuProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
+  const previousFocus = useRef<HTMLElement | null>(null);
   const lenis = useLenis();
+  const [closing, setClosing] = useState(false);
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element && lenis) {
-      lenis.scrollTo(element, { offset: -80, duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-    }
-    onClose();
-  };
-  const focusable = () => {
-    if (!drawerRef.current) return [] as HTMLElement[];
-    return Array.from(drawerRef.current.querySelectorAll<HTMLElement>("a, button"));
+  const handleNavigate = (id: string) => {
+    setClosing(true);
+    onNavigate(id);
+    setTimeout(() => {
+      setClosing(false);
+      onClose();
+    }, 200);
   };
 
   useEffect(() => {
     if (isOpen) {
-      const items = focusable();
-      items[0]?.focus();
-      // Simple focus trap: wrap focus when tabbing
+      previousFocus.current = document.activeElement as HTMLElement;
+      const focusable = drawerRef.current?.querySelectorAll<HTMLElement>(
+        'button, [href], [tabindex]:not([tabindex="-1"])'
+      );
+      const firstFocusable = focusable?.[0];
+      firstFocusable?.focus();
+
       const handler = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          onClose();
+          return;
+        }
         if (e.key !== 'Tab') return;
-        const focusables = items;
+        const focusables = Array.from(drawerRef.current?.querySelectorAll<HTMLElement>(
+          'button, [href], [tabindex]:not([tabindex="-1"])'
+        ) || []);
         if (focusables.length === 0) return;
-        const current = (document.activeElement as HTMLElement) || null;
+        const current = document.activeElement as HTMLElement | null;
         if (e.shiftKey) {
           if (current === focusables[0]) {
             e.preventDefault();
@@ -46,26 +59,43 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
       };
       document.addEventListener('keydown', handler);
       return () => document.removeEventListener('keydown', handler);
+    } else if (previousFocus.current) {
+      previousFocus.current.focus();
     }
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen && !closing) return null;
+
   return (
-    <div>
-      <div className="mobile-drawer-overlay" onClick={onClose} aria-hidden={!isOpen} />
-      <aside id="mobile-drawer" ref={drawerRef} className="mobile-drawer" role="navigation" aria-label="Mobile Navigation" aria-hidden={!isOpen}>
-        <button className="mobile-drawer-close" onClick={onClose} aria-label="Close menu">×</button>
+    <div className={`mobile-drawer-backdrop ${closing ? 'closing' : ''}`}>
+      <div className="mobile-drawer-overlay" onClick={onClose} aria-hidden="true" />
+      <aside
+        id="mobile-drawer"
+        ref={drawerRef}
+        className={`mobile-drawer ${closing ? 'closing' : ''}`}
+        role="navigation"
+        aria-label="Mobile Navigation"
+        aria-hidden={!isOpen}
+      >
+        <button
+          className="mobile-drawer-close"
+          onClick={() => { setClosing(true); setTimeout(onClose, 200); }}
+          aria-label="Close menu"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
         <nav>
           <ul>
-            <li><button onClick={() => scrollToSection('inicio')}>Início</button></li>
-            <li><button onClick={() => scrollToSection('timeline')}>Timeline</button></li>
-            <li><button onClick={() => scrollToSection('trabalhos')}>Trabalhos</button></li>
-            <li><button onClick={() => scrollToSection('contato')}>Contate-me</button></li>
+            {navItems.map((item) => (
+              <li key={item.id}>
+                <button onClick={() => handleNavigate(item.id)}>
+                  {item.label}
+                </button>
+              </li>
+            ))}
           </ul>
         </nav>
       </aside>
     </div>
   );
-};
-
-export default MobileMenu;
+}
