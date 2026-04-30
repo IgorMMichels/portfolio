@@ -36,12 +36,15 @@ function App() {
       {isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
       {!isLoading && (
         <>
+          <a href="#main-content" className="skip-link">
+            Pular para o conteúdo principal
+          </a>
           <Cursor />
           <div className="app">
             <Header />
             <SocialSidebar />
-            
-            <main>
+
+            <main id="main-content">
               <Hero onVideoComplete={handleVideoComplete} />
               <SobreMim />
               <Timeline />
