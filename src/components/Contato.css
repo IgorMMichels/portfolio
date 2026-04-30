@@ -14,20 +14,6 @@
   gap: var(--spacing-md);
 }
 
-.section-title {
-  font-size: 0.9rem;
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--accent-cyan);
-  margin-bottom: var(--spacing-sm);
-}
-
-.title-number {
-  color: var(--accent-purple);
-  margin-right: 0.5em;
-}
-
 .status-text {
   font-size: 0.85rem;
   font-weight: 500;

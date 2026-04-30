@@ -49,6 +49,6 @@
 }
 
 /* Responsive: hide mobile drawer on large viewports by default */
-@media (min-width: 769px) {
+@media (min-width: 768px) {
   .mobile-drawer, .mobile-drawer-overlay { display: none; }
 }

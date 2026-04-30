@@ -73,20 +73,23 @@ const Hero = memo(function Hero({ onVideoComplete }: HeroProps) {
       }
     }
 
-    if (video.readyState >= 2) {
-      playVideo()
-    } else {
-      video.addEventListener('loadeddata', playVideo)
+    // On desktop, allow auto-play; on mobile, do not auto-play
+    if (!isMobile) {
+      if (video.readyState >= 2) {
+        playVideo()
+      } else {
+        video.addEventListener('loadeddata', playVideo)
+      }
+      // Listen for video end
+      video.addEventListener('ended', onVideoEnded)
     }
-
-    // Listen for video end
-    video.addEventListener('ended', onVideoEnded)
 
     return () => {
       video.removeEventListener('ended', onVideoEnded)
       video.removeEventListener('loadeddata', playVideo)
+      video.removeEventListener('ended', onVideoEnded)
     }
-  }, [handleVideoComplete])
+  }, [handleVideoComplete, isMobile])
 
   useEffect(() => {
     if (!showContent) return
@@ -128,8 +131,9 @@ const Hero = memo(function Hero({ onVideoComplete }: HeroProps) {
             className="hero-video"
             muted
             playsInline
-            loop={isMobile ? true : false}
-            autoPlay={!isMobile}
+            loop={false}
+            autoPlay={false}
+            poster="/assets/VideoIgor-last-frame.jpg"
           />
         ) : (
           <img 

@@ -3,21 +3,6 @@
   position: relative;
 }
 
-.section-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: var(--spacing-lg);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.title-number {
-  color: var(--accent-cyan);
-  font-size: 1.5rem;
-  font-weight: 400;
-}
-
 .sobre-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
